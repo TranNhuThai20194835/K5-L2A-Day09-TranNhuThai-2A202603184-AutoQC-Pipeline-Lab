@@ -17,8 +17,12 @@ TODO(học viên): vì sao `05_review_queue.csv` xếp ảnh đầu hàng như v
 ## 3. Calibration (2 ngưỡng)
 | Tham số | Khởi đầu | Đã chọn | Precision / Recall (trước → sau) | Lý do (đánh đổi) |
 |---|---|---|---|---|
-| `duplicates.phash_dist` | 2 | TODO(học viên) | | |
-| `second_opinion.conf` | 0.25 | TODO(học viên) | | |
+| `duplicates.phash_dist` | 2 | 8 | DUP_IMAGE_EXACT: 1,00 / 1,00 → 1,00 / 1,00
+DUP_IMAGE_NEAR: 1,00 / 0,50 → 1,00 / 0,67 | Máy tự xoá ảnh nên ưu tiên precision cao (FP = mất ảnh tốt). Bảng phẳng từ 4 đến 14 (NEAR R = 0,67, EXACT không đổi) nên chọn giữa vùng phẳng. Không chọn 16 vì sát vách sụp ở 20 (EXACT R = 0,33) mà chỉ thêm được 1 ảnh gần trùng. Trên raw loại thêm 2 ảnh (19 → 21). |
+| `second_opinion.conf` | 0.25 | 0.6 | WRONG_CLASS: 0,56 / 0,83 → 0,62 / 0,83
+MISSING: 0,50 / 1,00 → 0,57 / 1,00
+LOOSE_BOX: 0,29 / 0,40 → 0,20 / 0,20
+FALSE_POS: 0,31 / 1,00 → 0,31 / 1,00 (không phụ thuộc `conf`) | Cảnh báo cho người xem nên FN đắt hơn FP. 0,6 là mức cao nhất mà MISSING còn giữ recall 1,00 (0,7 tụt còn 0,88; 0,8 còn 0,75), WRONG_CLASS precision tăng. Đánh đổi: LOOSE_BOX xấu đi (R 0,40 → 0,20, chỉ 5 lỗi chèn). Trên raw, cảnh báo giảm 273 → 153, hàng đợi 145 → 125. |
 
 TODO(học viên): **một chỗ calibration có thể đánh lừa bạn**, kèm bằng chứng từ dữ liệu của bạn (vd. mở xem vài cặp ảnh bị cho là trùng; số ảnh bị loại ở bước 1 có hợp lý không?).
 
